@@ -53,7 +53,7 @@ public class UserResource {
         User user = service.fromDTO(userDTO);
         user.setId(id);
         user = service.update(user);
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.noContent().build();
     }
 
 }
