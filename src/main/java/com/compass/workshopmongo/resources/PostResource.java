@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.compass.workshopmongo.domain.Post;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,16 @@ public class PostResource {
     @GetMapping
     public ResponseEntity<List<Post>> findAll(){
         List<Post> posts = service.findAll();
+        return ResponseEntity.ok().body(posts);
+    }
+
+    @GetMapping(value = "/fullsearch")
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate){
+        text = URL.decodeParam(text);
+        List<Post> posts = service.fullSearch(text, URL.convertDate(minDate, new Date(0L)), URL.convertDate(maxDate, new Date()));
         return ResponseEntity.ok().body(posts);
     }
 
